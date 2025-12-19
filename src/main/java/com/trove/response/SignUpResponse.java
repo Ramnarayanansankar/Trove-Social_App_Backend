@@ -3,14 +3,14 @@ package com.trove.response;
 public class SignUpResponse extends Response{
 
     private String message;
-    private int photoId;
+    private int id;
 
     public SignUpResponse(){
     }
 
-    public SignUpResponse(String message, int photoId) {
+    public SignUpResponse(String message, int id) {
         this.message = message;
-        this.photoId = photoId;
+        this.id = id;
     }
 
     public String getMessage() {
@@ -21,11 +21,11 @@ public class SignUpResponse extends Response{
         this.message = message;
     }
 
-    public int getPhotoId() {
-        return photoId;
+    public int getId() {
+        return id;
     }
 
-    public void setPhotoId(int photoId) {
-        this.photoId = photoId;
+    public void setId(int id) {
+        this.id = id;
     }
 }
