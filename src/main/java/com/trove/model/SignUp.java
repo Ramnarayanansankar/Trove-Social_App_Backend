@@ -11,10 +11,10 @@ public class SignUp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
-    @Column
+    @Column(name = "firstname")
     private String firstName;
 
-    @Column
+    @Column(name = "lastname")
     private String lastName;
 
     @Column
@@ -23,7 +23,7 @@ public class SignUp {
     @Column
     private String password;
 
-    @Column
+    @Column(name = "phonenumber")
     private String phoneNumber;
 
     @Column

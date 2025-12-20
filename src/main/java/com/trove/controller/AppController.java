@@ -4,7 +4,6 @@ import com.trove.request.SignUpRequest;
 import com.trove.response.ErrorResponse;
 import com.trove.response.Response;
 import com.trove.service.AppService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppController {
 
 
-    private AppService appService;
+    private final AppService appService;
+
+    public AppController(AppService appService) {
+        this.appService = appService;
+    }
 
     @PostMapping("/signUp")
     public ResponseEntity<Response> signUp(@RequestBody SignUpRequest signUpRequest, BindingResult result) {
