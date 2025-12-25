@@ -52,7 +52,7 @@ public class AppService {
         }
     }
 
-    public Response doLogin(LoginRequest loginRequest){
+    public SignUp doLogin(LoginRequest loginRequest){
 
         Optional<SignUp> userOptional = signUpRepository.findByEmail(loginRequest.getEmail());
 
@@ -60,12 +60,10 @@ public class AppService {
             SignUp loginUser = userOptional.get();
 
             if(bCryptPasswordEncoder.matches(loginRequest.getPassword(),loginUser.getPassword())){
-                return new Response("Login successful");
-            } else {
-                return new ErrorResponse("Invalid password");
+                return loginUser;
             }
         } else {
-            return new ErrorResponse("User not found");
+            return null;
         }
 
     }
