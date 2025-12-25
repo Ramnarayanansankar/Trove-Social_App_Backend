@@ -51,7 +51,7 @@ public class AppController {
 
     @PostMapping("/login")
     public ResponseEntity<?> logIn(@RequestBody LoginRequest loginRequest, BindingResult result) {
-        // 1. Handle Validation Errors (e.g. empty email)
+        // 1. Handle Validation Errors
         if (result.hasErrors()) {
             ErrorResponse errorResponse = new ErrorResponse(result.getFieldError().getDefaultMessage());
             return ResponseEntity.badRequest().body(errorResponse);

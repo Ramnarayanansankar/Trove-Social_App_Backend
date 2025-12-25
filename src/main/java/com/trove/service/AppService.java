@@ -62,10 +62,8 @@ public class AppService {
             if(bCryptPasswordEncoder.matches(loginRequest.getPassword(),loginUser.getPassword())){
                 return loginUser;
             }
-        } else {
-            return null;
         }
-
+        return null;
     }
 
 }
