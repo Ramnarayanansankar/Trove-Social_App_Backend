@@ -37,6 +37,7 @@ public class AppController {
         }
 
     }
+//    Previous Logic Which I Wrote !! Keeping it as a Backup !!
 
 //    @PostMapping("/login")
 //    public ResponseEntity<Response> logIn(@RequestBody LoginRequest loginRequest, BindingResult result) {
@@ -56,7 +57,6 @@ public class AppController {
             ErrorResponse errorResponse = new ErrorResponse(result.getFieldError().getDefaultMessage());
             return ResponseEntity.badRequest().body(errorResponse);
         }
-
         // 2. Call the service
         // NOTE: appService.doLogin must now return a 'User' object, not a String.
         SignUp user = appService.doLogin(loginRequest);
