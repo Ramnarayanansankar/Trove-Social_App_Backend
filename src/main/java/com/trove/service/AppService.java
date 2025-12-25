@@ -2,10 +2,12 @@ package com.trove.service;
 
 import com.trove.model.SignUp;
 import com.trove.repository.SignUpRepository;
+import com.trove.request.LoginRequest;
 import com.trove.request.SignUpRequest;
 import com.trove.response.ErrorResponse;
 import com.trove.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +17,8 @@ public class AppService {
 
     @Autowired
     private SignUpRepository signUpRepository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     private boolean isUserPresentBasedOnEmail(String email){
@@ -31,7 +35,7 @@ public class AppService {
             signupuser.setFirstName(signUpRequest.getFirstName());
             signupuser.setLastName(signUpRequest.getLastName());
             signupuser.setEmail(signUpRequest.getEmail());
-            signupuser.setPassword(signUpRequest.getPassword());
+            signupuser.setPassword(bCryptPasswordEncoder.encode(signUpRequest.getPassword()));
             signupuser.setPhoneNumber(signUpRequest.getPhoneNumber());
             signupuser.setGender(signUpRequest.getGender());
             signupuser.setDob(signUpRequest.getDob());
@@ -46,6 +50,24 @@ public class AppService {
         else{
             return new ErrorResponse("Email Id already exist. Try different email Id");
         }
+    }
+
+    public Response doLogin(LoginRequest loginRequest){
+
+        Optional<SignUp> userOptional = signUpRepository.findByEmail(loginRequest.getEmail());
+
+        if(userOptional.isPresent()){
+            SignUp loginUser = userOptional.get();
+
+            if(bCryptPasswordEncoder.matches(loginRequest.getPassword(),loginUser.getPassword())){
+                return new Response("Login successful");
+            } else {
+                return new ErrorResponse("Invalid password");
+            }
+        } else {
+            return new ErrorResponse("User not found");
+        }
+
     }
 
 }
