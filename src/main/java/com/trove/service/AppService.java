@@ -76,12 +76,12 @@ public class AppService {
         return null;
     }
 
-    public boolean checkEmailExists(String email){
-        return signUpRepository.existsByEmail(email);
-    }
-
-    public boolean checkPhoneNumberExists(String phoneNumber){
-        return signUpRepository.existsByPhoneNumber(phoneNumber);
-    }
+//    public boolean checkEmailExists(String email){
+//        return signUpRepository.existsByEmail(email);
+//    }
+//
+//    public boolean checkPhoneNumberExists(String phoneNumber){
+//        return signUpRepository.existsByPhoneNumber(phoneNumber);
+//    }
 
 }

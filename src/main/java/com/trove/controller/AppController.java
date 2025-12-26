@@ -62,32 +62,30 @@ public class AppController {
         }
     }
 
-    @GetMapping("/checkemail")
-    public ResponseEntity<String> checkEmail(@RequestParam("email") String email){
-
-        boolean exists = appService.checkEmailExists(email);
-
-        if(exists){
-            return ResponseEntity.ok("Email exists in the database.");
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email not found.");
-        }
-    }
-
-    @GetMapping("/checkphonenumber")
-    public ResponseEntity<String> checkPhoneNumber(@RequestParam("phoneNumber") String phoneNumber){
-
-        boolean exists = appService.checkPhoneNumberExists(phoneNumber);
-
-        if(exists){
-            return ResponseEntity.ok("Phone number exists in the database.");
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Phone number not found.");
-        }
-    }
+//    @GetMapping("/checkemail")
+//    public ResponseEntity<String> checkEmail(@RequestParam("email") String email){
+//
+//        boolean exists = appService.checkEmailExists(email);
+//
+//        if(exists){
+//            return ResponseEntity.ok("Email exists in the database.");
+//        }
+//        else{
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email not found.");
+//        }
+//    }
+//
+//    @GetMapping("/checkphonenumber")
+//    public ResponseEntity<String> checkPhoneNumber(@RequestParam("phoneNumber") String phoneNumber){
+//
+//        boolean exists = appService.checkPhoneNumberExists(phoneNumber);
+//
+//        if(exists){
+//            return ResponseEntity.ok("Phone number exists in the database.");
+//        }
+//        else{
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Phone number not found.");
+//        }
+//    }
 }
-
-
 
