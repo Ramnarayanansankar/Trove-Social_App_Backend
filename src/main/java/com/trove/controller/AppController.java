@@ -74,6 +74,19 @@ public class AppController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email not found.");
         }
     }
+
+    @GetMapping("/checkphonenumber")
+    public ResponseEntity<String> checkPhoneNumber(@RequestParam("phoneNumber") String phoneNumber){
+
+        boolean exists = appService.checkPhoneNumberExists(phoneNumber);
+
+        if(exists){
+            return ResponseEntity.ok("Phone number exists in the database.");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Phone number not found.");
+        }
+    }
 }
 
 

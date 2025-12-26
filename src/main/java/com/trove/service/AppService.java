@@ -80,4 +80,8 @@ public class AppService {
         return signUpRepository.existsByEmail(email);
     }
 
+    public boolean checkPhoneNumberExists(String phoneNumber){
+        return signUpRepository.existsByPhoneNumber(phoneNumber);
+    }
+
 }
