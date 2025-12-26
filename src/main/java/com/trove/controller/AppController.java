@@ -1,11 +1,11 @@
 package com.trove.controller;
 
+import com.trove.exceptions.UserAlreadyExistsException;
 import com.trove.model.SignUp;
 import com.trove.request.LoginRequest;
 import com.trove.request.SignUpRequest;
 import com.trove.response.ErrorResponse;
 import com.trove.response.LoginResponse;
-import com.trove.response.Response;
 import com.trove.service.AppService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,28 +27,20 @@ public class AppController {
     }
 
     @PostMapping("/signUp")
-    public ResponseEntity<Response> signUp(@RequestBody SignUpRequest signUpRequest, BindingResult result) {
-        if (result.hasErrors()) {
-            ErrorResponse errorResponse = new ErrorResponse(result.getFieldError().getDefaultMessage());
-            return ResponseEntity.badRequest().body(errorResponse);
-        } else {
-            return ResponseEntity.ok().body(appService.doSignUp(signUpRequest));
+    public ResponseEntity<?> signUp(@RequestBody SignUpRequest signUpRequest) {
+        try {
+            appService.doSignUp(signUpRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully!");
 
+        } catch (UserAlreadyExistsException e) {
+            // Returns 409 CONFLICT if email exists
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+
+        } catch (Exception e) {
+            // Returns 500 INTERNAL SERVER ERROR for anything else
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during registration.");
         }
-
     }
-//    Previous Logic Which I Wrote !! Keeping it as a Backup !!
-
-//    @PostMapping("/login")
-//    public ResponseEntity<Response> logIn(@RequestBody LoginRequest loginRequest, BindingResult result) {
-//        if (result.hasErrors()) {
-//            ErrorResponse errorResponse = new ErrorResponse(result.getFieldError().getDefaultMessage());
-//            return ResponseEntity.badRequest().body(errorResponse);
-//        } else {
-//            return ResponseEntity.ok().body(appService.doLogin(loginRequest));
-//
-//        }
-//    }
 
     @PostMapping("/login")
     public ResponseEntity<?> logIn(@RequestBody LoginRequest loginRequest, BindingResult result) {
@@ -73,3 +65,6 @@ public class AppController {
         }
     }
 }
+
+
+

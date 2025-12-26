@@ -1,5 +1,6 @@
 package com.trove.service;
 
+import com.trove.exceptions.UserAlreadyExistsException;
 import com.trove.model.SignUp;
 import com.trove.repository.SignUpRepository;
 import com.trove.request.LoginRequest;
@@ -21,35 +22,57 @@ public class AppService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
-    private boolean isUserPresentBasedOnEmail(String email){
-        Optional<SignUp> userRetrievedFromDB = signUpRepository.findByEmail(email);
-        if (userRetrievedFromDB.isEmpty()) {
-            return false;
-        }
-        return true;
-    }
-    public Response doSignUp(SignUpRequest signUpRequest){
+//    private boolean isUserPresentBasedOnEmail(String email){
+//        Optional<SignUp> userRetrievedFromDB = signUpRepository.findByEmail(email);
+//        if (userRetrievedFromDB.isEmpty()) {
+//            return false;
+//        }
+//        return true;
+//    }
 
-        if(!isUserPresentBasedOnEmail(signUpRequest.getEmail())){
-            SignUp signupuser = new SignUp();
-            signupuser.setFirstName(signUpRequest.getFirstName());
-            signupuser.setLastName(signUpRequest.getLastName());
-            signupuser.setEmail(signUpRequest.getEmail());
-            signupuser.setPassword(bCryptPasswordEncoder.encode(signUpRequest.getPassword()));
-            signupuser.setPhoneNumber(signUpRequest.getPhoneNumber());
-            signupuser.setGender(signUpRequest.getGender());
-            signupuser.setDob(signUpRequest.getDob());
-            signupuser.setCountry(signUpRequest.getCountry());
-            signupuser.setState(signUpRequest.getState());
-            signupuser.setCity(signUpRequest.getCity());
-            signupuser.setAddress(signUpRequest.getAddress());
-            signupuser.setPincode(signUpRequest.getPincode());
-            signUpRepository.save(signupuser);
-            return new Response("User registered successfully");
+
+    public SignUp doSignUp(SignUpRequest signUpRequest){
+
+        if (signUpRepository.existsByEmail(signUpRequest.getEmail())) {
+            throw new UserAlreadyExistsException("Email " + signUpRequest.getEmail() + " is already in use.");
         }
-        else{
-            return new ErrorResponse("Email Id already exist. Try different email Id");
-        }
+        SignUp signupuser = new SignUp();
+        signupuser.setFirstName(signUpRequest.getFirstName());
+        signupuser.setLastName(signUpRequest.getLastName());
+        signupuser.setEmail(signUpRequest.getEmail());
+        signupuser.setPassword(bCryptPasswordEncoder.encode(signUpRequest.getPassword()));
+        signupuser.setPhoneNumber(signUpRequest.getPhoneNumber());
+        signupuser.setGender(signUpRequest.getGender());
+        signupuser.setDob(signUpRequest.getDob());
+        signupuser.setCountry(signUpRequest.getCountry());
+        signupuser.setState(signUpRequest.getState());
+        signupuser.setCity(signUpRequest.getCity());
+        signupuser.setAddress(signUpRequest.getAddress());
+        signupuser.setPincode(signUpRequest.getPincode());
+        return signUpRepository.save(signupuser);
+
+
+
+//        if(!isUserPresentBasedOnEmail(signUpRequest.getEmail())){
+//            SignUp signupuser = new SignUp();
+//            signupuser.setFirstName(signUpRequest.getFirstName());
+//            signupuser.setLastName(signUpRequest.getLastName());
+//            signupuser.setEmail(signUpRequest.getEmail());
+//            signupuser.setPassword(bCryptPasswordEncoder.encode(signUpRequest.getPassword()));
+//            signupuser.setPhoneNumber(signUpRequest.getPhoneNumber());
+//            signupuser.setGender(signUpRequest.getGender());
+//            signupuser.setDob(signUpRequest.getDob());
+//            signupuser.setCountry(signUpRequest.getCountry());
+//            signupuser.setState(signUpRequest.getState());
+//            signupuser.setCity(signUpRequest.getCity());
+//            signupuser.setAddress(signUpRequest.getAddress());
+//            signupuser.setPincode(signUpRequest.getPincode());
+//            signUpRepository.save(signupuser);
+//            return new Response("User registered successfully");
+//        }
+//        else{
+//            return new ErrorResponse("Email Id already exist. Try different email Id");
+//        }
     }
 
     public SignUp doLogin(LoginRequest loginRequest){
