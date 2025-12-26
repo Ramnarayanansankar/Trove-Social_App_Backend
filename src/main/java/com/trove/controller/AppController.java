@@ -10,10 +10,7 @@ import com.trove.service.AppService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth") // Base URL
@@ -62,6 +59,19 @@ public class AppController {
             // Handle invalid credentials
             ErrorResponse errorResponse = new ErrorResponse("Invalid email or password");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        }
+    }
+
+    @GetMapping("/checkemail")
+    public ResponseEntity<String> checkEmail(@RequestParam("email") String email){
+
+        boolean exists = appService.checkEmailExists(email);
+
+        if(exists){
+            return ResponseEntity.ok("Email exists in the database.");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email not found.");
         }
     }
 }
