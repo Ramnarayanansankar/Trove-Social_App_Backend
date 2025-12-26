@@ -21,6 +21,7 @@ public class AppService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+//  Old Logic written for the checking the user is already present or not in the Database
 
 //    private boolean isUserPresentBasedOnEmail(String email){
 //        Optional<SignUp> userRetrievedFromDB = signUpRepository.findByEmail(email);
@@ -29,6 +30,9 @@ public class AppService {
 //        }
 //        return true;
 //    }
+
+// This Logic is written for the checking the user is already present or not in the Database with the help of the email id.
+//    Created the User Already Exists Exception which is a Custom Exception to handle the case when the user is already present in the Database.
 
 
     public SignUp doSignUp(SignUpRequest signUpRequest){
@@ -51,29 +55,12 @@ public class AppService {
         signupuser.setPincode(signUpRequest.getPincode());
         return signUpRepository.save(signupuser);
 
-
-
-//        if(!isUserPresentBasedOnEmail(signUpRequest.getEmail())){
-//            SignUp signupuser = new SignUp();
-//            signupuser.setFirstName(signUpRequest.getFirstName());
-//            signupuser.setLastName(signUpRequest.getLastName());
-//            signupuser.setEmail(signUpRequest.getEmail());
-//            signupuser.setPassword(bCryptPasswordEncoder.encode(signUpRequest.getPassword()));
-//            signupuser.setPhoneNumber(signUpRequest.getPhoneNumber());
-//            signupuser.setGender(signUpRequest.getGender());
-//            signupuser.setDob(signUpRequest.getDob());
-//            signupuser.setCountry(signUpRequest.getCountry());
-//            signupuser.setState(signUpRequest.getState());
-//            signupuser.setCity(signUpRequest.getCity());
-//            signupuser.setAddress(signUpRequest.getAddress());
-//            signupuser.setPincode(signUpRequest.getPincode());
-//            signUpRepository.save(signupuser);
-//            return new Response("User registered successfully");
-//        }
-//        else{
-//            return new ErrorResponse("Email Id already exist. Try different email Id");
-//        }
     }
+
+//    Here we are getting the user credentials and checking if the user is present in the Database or not.
+//    If the user is present then we are checking the password is correct or not.
+//    If the password is correct then we are returning the user object.
+//    If the password is not correct then we are returning null.
 
     public SignUp doLogin(LoginRequest loginRequest){
 
