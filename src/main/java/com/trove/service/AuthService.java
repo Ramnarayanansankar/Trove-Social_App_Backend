@@ -5,8 +5,6 @@ import com.trove.model.SignUp;
 import com.trove.repository.SignUpRepository;
 import com.trove.request.LoginRequest;
 import com.trove.request.SignUpRequest;
-import com.trove.response.ErrorResponse;
-import com.trove.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class AppService {
+public class AuthService {
 
     @Autowired
     private SignUpRepository signUpRepository;
@@ -53,6 +51,15 @@ public class AppService {
         signupuser.setCity(signUpRequest.getCity());
         signupuser.setAddress(signUpRequest.getAddress());
         signupuser.setPincode(signUpRequest.getPincode());
+        signupuser.setPhotoUrl(signUpRequest.getPhotoUrl());
+
+//        // HANDLE PHOTO
+//        if (signUpRequest.getPhotoUrl() != null) {
+//            signupuser.setPhotoUrl(signUpRequest.getPhotoUrl());
+//        } else {
+//            // Optional: Set a default placeholder image if none provided
+//            signupuser.setPhotoUrl("http://localhost:8081/uploads/default-avatar.png");
+//        }
         return signUpRepository.save(signupuser);
 
     }
@@ -76,12 +83,15 @@ public class AppService {
         return null;
     }
 
-//    public boolean checkEmailExists(String email){
-//        return signUpRepository.existsByEmail(email);
-//    }
-//
-//    public boolean checkPhoneNumberExists(String phoneNumber){
-//        return signUpRepository.existsByPhoneNumber(phoneNumber);
+
+
+// This is a Service Class I have Written for the Firebase Setup. Since it is not free, I am not Configuring it there.
+//    Whenever we want to use it, We can remove the comment and use it for the application.
+
+//    public void updatePhoto(PhotoUpdateRequest photoUpdateRequest){
+//        SignUp user = signUpRepository.findByEmail(photoUpdateRequest.getEmail()).orElseThrow(() -> new RuntimeException("User not found with email: " + photoUpdateRequest.getEmail()));
+//        user.setPhotoUrl(photoUpdateRequest.getPhotoUrl());
+//        signUpRepository.save(user);
 //    }
 
 }

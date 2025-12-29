@@ -1,12 +1,10 @@
 package com.trove.controller;
 
+import com.trove.response.Response;
 import com.trove.service.ValidationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -18,19 +16,21 @@ public class ValidationController {
         this.validationService = validationService;
     }
 
-    @GetMapping("/checkemail")
-    public ResponseEntity<String> checkEmail(@RequestParam("email") String email){
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/checkEmail")
+    public ResponseEntity<Response> checkEmail(@RequestParam("email") String email){
 
         boolean exists = validationService.checkEmailExists(email);
 
         if(exists){
-            return ResponseEntity.ok("Email exists in the database.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Email Id exists!"));
         }
         else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email not found.");
+            return ResponseEntity.status(HttpStatus.OK).body(new Response("Email Id does not exist!"));
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/checkphonenumber")
     public ResponseEntity<String> checkPhoneNumber(@RequestParam("phoneNumber") String phoneNumber){
 

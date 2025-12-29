@@ -47,10 +47,13 @@ public class SignUp {
     @Column
     private String pincode;
 
+    @Column(name = "photourl")
+    private String photoUrl;
+
     public SignUp() {
     }
 
-    public SignUp(String firstName, String lastName, String email, String password, String phoneNumber, String gender, String dob, String country, String state, String city, String address, String pincode) {
+    public SignUp(String firstName, String lastName, String email, String password, String phoneNumber, String gender, String dob, String country, String state, String city, String address, String pincode, String photoUrl) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -63,6 +66,7 @@ public class SignUp {
         this.city = city;
         this.address = address;
         this.pincode = pincode;
+        this.photoUrl = photoUrl;
     }
 
     public String getFirstName() {
@@ -159,5 +163,13 @@ public class SignUp {
 
     public void setPincode(String pincode) {
         this.pincode = pincode;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

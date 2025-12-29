@@ -14,11 +14,12 @@ public class SignUpRequest {
     private String city;
     private String address;
     private String pincode;
+    private String photoUrl;
 
     public SignUpRequest() {
     }
 
-    public SignUpRequest(String firstName, String lastName, String email, String password, String phoneNumber, String gender, String dob, String country, String state, String city, String address, String pincode) {
+    public SignUpRequest(String firstName, String lastName, String email, String password, String phoneNumber, String gender, String dob, String country, String state, String city, String address, String pincode, String photoUrl) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -31,6 +32,7 @@ public class SignUpRequest {
         this.city = city;
         this.address = address;
         this.pincode = pincode;
+        this.photoUrl = photoUrl;
     }
 
     public String getFirstName() {
@@ -127,5 +129,13 @@ public class SignUpRequest {
 
     public void setPincode(String pincode) {
         this.pincode = pincode;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }
