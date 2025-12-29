@@ -2,7 +2,6 @@ package com.trove.controller;
 
 import com.trove.service.FileStorageService;
 import com.trove.service.PhotoService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
