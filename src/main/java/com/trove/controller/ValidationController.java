@@ -37,10 +37,10 @@ public class ValidationController {
         boolean exists = validationService.checkPhoneNumberExists(phoneNumber);
 
         if(exists){
-            return ResponseEntity.ok("Phone number exists in the database.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Phone number not found.");
         }
         else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Phone number not found.");
+            return ResponseEntity.status(HttpStatus.OK).body("Phone number not found.");
         }
     }
 }
