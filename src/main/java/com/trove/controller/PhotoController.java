@@ -24,7 +24,11 @@ public class PhotoController {
         this.fileStorageService = fileStorageService;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+//    This API Endpoint Uploads the Photo to the Local Storage.
+//    This method checks whether the file is present or not and
+//    calls the fileStorageService class to store the file.
+
+//    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/upload")
     public String uploadPhoto(@RequestParam("file")MultipartFile file) {
 
@@ -38,9 +42,12 @@ public class PhotoController {
 
 //    This API Endpoint Gets the Photo from the Local Storage with the photorequest and
 //    Gives the response as a image file(such as .jpg,.png)
+//  This method first calls the loadFileAsResource method which is in PhotoService class.
+//    It Checks whether the image is present or not.
+//    It checks whether the image is having extension or not.
+//    Sends the image in Response Body.
 
-
-    @CrossOrigin(origins = "http://localhost:4200")
+//    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/getPhoto")
     public ResponseEntity<Resource> getPhoto(@RequestBody PhotoRequest photoRequest) {
 

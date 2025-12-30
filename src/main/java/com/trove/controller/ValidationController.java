@@ -16,7 +16,7 @@ public class ValidationController {
         this.validationService = validationService;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+//    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/checkEmail")
     public ResponseEntity<Response> checkEmail(@RequestParam("email") String email){
 
@@ -30,7 +30,7 @@ public class ValidationController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+//    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/checkphonenumber")
     public ResponseEntity<String> checkPhoneNumber(@RequestParam("phoneNumber") String phoneNumber){
 

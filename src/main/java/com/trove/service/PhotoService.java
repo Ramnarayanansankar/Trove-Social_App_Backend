@@ -16,6 +16,8 @@ public class PhotoService {
     @Autowired
     private SignUpRepository signUpRepository;
 
+//This Function is going to Check the filepath exists or not
+// and whether is readable or not and Return the image from the local
 
     public Resource loadFileAsResource(String filePath) throws MalformedURLException {
 
@@ -28,6 +30,9 @@ public class PhotoService {
             return null;
         }
     }
+
+
+//    This function is going to check the image file type and return the type of file
 
     public MediaType getMediaTypeForFileName(String fileName) {
         String lowerCaseName = fileName.toLowerCase();

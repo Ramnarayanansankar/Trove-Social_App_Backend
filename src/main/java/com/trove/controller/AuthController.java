@@ -27,11 +27,11 @@ public class AuthController {
         this.fileStorageService = fileStorageService;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+//    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/signUp")
     public ResponseEntity<?> signUp(@RequestBody SignUpRequest signUpRequest) {
         try {
-            SignUpResponse signUpResponse = new SignUpResponse("User Registered Sucessfully", signUpRequest.getEmail(), signUpRequest.getPhotoUrl());
+            SignUpResponse signUpResponse = new SignUpResponse("User Registered Successfully", signUpRequest.getEmail(), signUpRequest.getPhotoUrl());
             authService.doSignUp(signUpRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(signUpResponse);
 
@@ -45,7 +45,7 @@ public class AuthController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+//    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/login")
     public ResponseEntity<?> logIn(@RequestBody LoginRequest loginRequest, BindingResult result) {
         // 1. Handle Validation Errors
