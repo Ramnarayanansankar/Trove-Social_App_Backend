@@ -58,8 +58,8 @@ public class AuthController {
 
         // 3. Check if login was successful
         if (user != null) {
-            // Create the response object with the message AND the first name
-            LoginResponse response = new LoginResponse("Login Successful", user.getFirstName());
+            // Create the response object with the message, first name and the PhotoURL
+            LoginResponse response = new LoginResponse("Login Successful", user.getFirstName(), user.getPhotoUrl());
             return ResponseEntity.ok().body(response);
         } else {
             // Handle invalid credentials

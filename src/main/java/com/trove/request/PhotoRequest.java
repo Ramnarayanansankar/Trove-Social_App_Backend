@@ -4,25 +4,15 @@ package com.trove.request;
 // This class I have Written for the firebase Integration. Since we are not using now, I have Commented out.
 // Feel free to use it when you are using firebase Integration.
 
-public class PhotoUploadRequest {
+public class PhotoRequest {
 
-    private String email;
     private String photoUrl;
 
-    public PhotoUploadRequest() {
+    public PhotoRequest() {
     }
 
-    public PhotoUploadRequest(String email, String photoUrl) {
-        this.email = email;
+    public PhotoRequest(String photoUrl) {
         this.photoUrl = photoUrl;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPhotoUrl() {
