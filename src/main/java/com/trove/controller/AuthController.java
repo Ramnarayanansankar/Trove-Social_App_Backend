@@ -4,10 +4,7 @@ import com.trove.exceptions.UserAlreadyExistsException;
 import com.trove.model.SignUp;
 import com.trove.request.LoginRequest;
 import com.trove.request.SignUpRequest;
-import com.trove.response.ErrorResponse;
-import com.trove.response.HomePageResponse;
-import com.trove.response.LoginResponse;
-import com.trove.response.SignUpResponse;
+import com.trove.response.*;
 import com.trove.service.AuthService;
 import com.trove.service.FileStorageService;
 import org.springframework.http.HttpStatus;
@@ -49,7 +46,7 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> logIn(@RequestBody LoginRequest loginRequest, BindingResult result) {
+    public ResponseEntity<Response> logIn(@RequestBody LoginRequest loginRequest, BindingResult result) {
         // 1. Handle Validation Errors
         if (result.hasErrors()) {
             ErrorResponse errorResponse = new ErrorResponse(result.getFieldError().getDefaultMessage());
@@ -61,8 +58,8 @@ public class AuthController {
         // 3. Check if login was successful
         if (user != null) {
             // Create the response object with the message, first name and the PhotoURL
-            HomePageResponse response = new HomePageResponse("Login Successful", user.getFirstName(), user.getEmail(), user.getPhotoUrl(), user.getId());
-            return ResponseEntity.ok().body(response);
+            HomePageResponse homePageResponse = new HomePageResponse("Login Successful", user.getFirstName(), user.getEmail(), user.getPhotoUrl(), user.getId());
+            return ResponseEntity.ok().body(homePageResponse);
         } else {
             // Handle invalid credentials
             ErrorResponse errorResponse = new ErrorResponse("Invalid email or password");

@@ -45,6 +45,14 @@ public class HomePageResponse extends Response{
         this.email = email;
     }
 
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
     public int getId() {
         return id;
     }
