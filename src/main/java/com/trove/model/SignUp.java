@@ -9,7 +9,7 @@ public class SignUp {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private int id;
 
     @Column(name = "firstname")
     private String firstName;
@@ -53,7 +53,8 @@ public class SignUp {
     public SignUp() {
     }
 
-    public SignUp(String firstName, String lastName, String email, String password, String phoneNumber, String gender, String dob, String country, String state, String city, String address, String pincode, String photoUrl) {
+    public SignUp(int id, String firstName, String lastName, String email, String password, String phoneNumber, String gender, String dob, String country, String state, String city, String address, String pincode, String photoUrl) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -67,6 +68,14 @@ public class SignUp {
         this.address = address;
         this.pincode = pincode;
         this.photoUrl = photoUrl;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {

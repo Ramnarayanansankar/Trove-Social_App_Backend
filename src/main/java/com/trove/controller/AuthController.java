@@ -5,6 +5,7 @@ import com.trove.model.SignUp;
 import com.trove.request.LoginRequest;
 import com.trove.request.SignUpRequest;
 import com.trove.response.ErrorResponse;
+import com.trove.response.HomePageResponse;
 import com.trove.response.LoginResponse;
 import com.trove.response.SignUpResponse;
 import com.trove.service.AuthService;
@@ -27,13 +28,14 @@ public class AuthController {
         this.fileStorageService = fileStorageService;
     }
 
-//    @CrossOrigin(origins = "http://localhost:4200")
+
     @PostMapping("/signUp")
     public ResponseEntity<?> signUp(@RequestBody SignUpRequest signUpRequest) {
         try {
-            SignUpResponse signUpResponse = new SignUpResponse("User Registered Successfully", signUpRequest.getEmail(), signUpRequest.getPhotoUrl());
-            authService.doSignUp(signUpRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body(signUpResponse);
+            SignUp signUp = authService.doSignUp(signUpRequest);
+            HomePageResponse homePageResponse = new HomePageResponse("User Registered Successfully", signUpRequest.getFirstName(), signUpRequest.getEmail(), signUp.getPhotoUrl(), signUp.getId());
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(homePageResponse);
 
         } catch (UserAlreadyExistsException e) {
             // Returns 409 CONFLICT if email exists
@@ -45,7 +47,7 @@ public class AuthController {
         }
     }
 
-//    @CrossOrigin(origins = "http://localhost:4200")
+
     @PostMapping("/login")
     public ResponseEntity<?> logIn(@RequestBody LoginRequest loginRequest, BindingResult result) {
         // 1. Handle Validation Errors
@@ -59,7 +61,7 @@ public class AuthController {
         // 3. Check if login was successful
         if (user != null) {
             // Create the response object with the message, first name and the PhotoURL
-            LoginResponse response = new LoginResponse("Login Successful", user.getFirstName(), user.getPhotoUrl());
+            HomePageResponse response = new HomePageResponse("Login Successful", user.getFirstName(), user.getEmail(), user.getPhotoUrl(), user.getId());
             return ResponseEntity.ok().body(response);
         } else {
             // Handle invalid credentials

@@ -16,7 +16,7 @@ public class ValidationController {
         this.validationService = validationService;
     }
 
-//    @CrossOrigin(origins = "http://localhost:4200")
+
     @GetMapping("/checkEmail")
     public ResponseEntity<Response> checkEmail(@RequestParam("email") String email){
 
@@ -30,14 +30,14 @@ public class ValidationController {
         }
     }
 
-//    @CrossOrigin(origins = "http://localhost:4200")
+
     @GetMapping("/checkphonenumber")
     public ResponseEntity<String> checkPhoneNumber(@RequestParam("phoneNumber") String phoneNumber){
 
         boolean exists = validationService.checkPhoneNumberExists(phoneNumber);
 
         if(exists){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Phone number not found.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Phone number found.");
         }
         else{
             return ResponseEntity.status(HttpStatus.OK).body("Phone number not found.");

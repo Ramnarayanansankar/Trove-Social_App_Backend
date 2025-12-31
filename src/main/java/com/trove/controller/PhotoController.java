@@ -28,7 +28,6 @@ public class PhotoController {
 //    This method checks whether the file is present or not and
 //    calls the fileStorageService class to store the file.
 
-//    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/upload")
     public String uploadPhoto(@RequestParam("file")MultipartFile file) {
 
@@ -47,12 +46,10 @@ public class PhotoController {
 //    It checks whether the image is having extension or not.
 //    Sends the image in Response Body.
 
-//    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/getPhoto")
     public ResponseEntity<Resource> getPhoto(@RequestBody PhotoRequest photoRequest) {
 
         try {
-
             Resource resource = photoService.loadFileAsResource(photoRequest.getPhotoUrl());
             if (resource == null) {
                 return ResponseEntity.notFound().build();
@@ -62,7 +59,6 @@ public class PhotoController {
             if (mediaType == null) {
                 return ResponseEntity.badRequest().body(null);
             }
-
             return ResponseEntity.ok()
                     .contentType(mediaType)
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
@@ -73,4 +69,5 @@ public class PhotoController {
         }
 
     }
+
 }

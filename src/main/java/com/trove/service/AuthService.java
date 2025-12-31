@@ -60,7 +60,12 @@ public class AuthService {
 //            // Optional: Set a default placeholder image if none provided
 //            signupuser.setPhotoUrl("http://localhost:8081/uploads/default-avatar.png");
 //        }
-        return signUpRepository.save(signupuser);
+         signUpRepository.save(signupuser);
+
+        Optional<SignUp> userOptional = signUpRepository.findByEmail(signUpRequest.getEmail());
+        SignUp signUpUser = userOptional.get();
+
+        return signUpUser;
 
     }
 
