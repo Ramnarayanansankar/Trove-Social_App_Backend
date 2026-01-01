@@ -1,14 +1,15 @@
 package com.trove.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+
+@Entity
+@Table(name = "posts")
 public class Posts {
 
     @Id
-    @Column
+    @Column(name = "postid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int postId;
 
@@ -21,15 +22,14 @@ public class Posts {
     @Column(name = "posttype")
     private String postType;
 
-    @Column(name = "media")
+    @Column(name = "media", columnDefinition = "TEXT")
     private String Media;
 
-    @Column(name = "postcreatedtime")
+    @CreationTimestamp
+    @Column(name = "postcreatedtime", updatable = false)
     private String postCreatedTime;
 
-
-    public Posts() {
-    }
+    public Posts(){}
 
     public Posts(int postId, int id, String postCaption, String postType, String media, String postCreatedTime) {
         this.postId = postId;

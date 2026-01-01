@@ -9,6 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,6 +23,8 @@ public class FileStorageService {
         this.fileStorageLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
         Files.createDirectories(this.fileStorageLocation);
     }
+
+//    This Function is for Storing Single File in the Given Directory
 
     public String storeFile(MultipartFile file) {
         try {
@@ -40,5 +45,16 @@ public class FileStorageService {
             throw new RuntimeException("Could not store file. Please try again!", ex);
         }
     }
+
+   public List<String> storeMultipleFiles(MultipartFile[] files){
+
+        List<String> filePaths = new ArrayList<>();
+
+        Arrays.stream(files).forEach(file ->{
+            String path = storeFile(file);
+            filePaths.add(path);
+        });
+        return filePaths;
+   }
 
 }
