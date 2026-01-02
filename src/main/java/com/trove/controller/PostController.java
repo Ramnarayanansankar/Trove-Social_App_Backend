@@ -1,6 +1,7 @@
 package com.trove.controller;
 
 import com.trove.response.CreatePostResponse;
+import com.trove.response.PostsResponseUserFeed;
 import com.trove.response.Response;
 import com.trove.response.UserFeedResponse;
 import com.trove.service.AuthService;
@@ -57,10 +58,12 @@ public class PostController {
         }
     }
 
-    @GetMapping("/postSummary")
-    public ResponseEntity<UserFeedResponse> getHomepagePostDetails(@RequestParam("userId") int id){
+    @GetMapping("/postSummary/{userId}")
+    public ResponseEntity<UserFeedResponse> getHomepagePostDetails(@PathVariable("userId") int id){
         return ResponseEntity.ok(postService.getHomepageData(id));
     }
+
+
 
 
 
@@ -83,6 +86,17 @@ public class PostController {
 
         }catch (Exception e){
             return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/postDetailedView/{postId}")
+    public ResponseEntity<PostsResponseUserFeed> getPostDetails(@PathVariable("postId") Integer postId) {
+        PostsResponseUserFeed post = postService.getSinglePost(postId);
+
+        if (post != null) {
+            return ResponseEntity.ok(post);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 

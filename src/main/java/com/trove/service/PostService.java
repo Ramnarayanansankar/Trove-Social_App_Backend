@@ -59,7 +59,7 @@ public class PostService {
                     String filename = Paths.get(fullPath.trim()).getFileName().toString();
 
                     String url = ServletUriComponentsBuilder.fromCurrentContextPath()
-                            .path("/api/auth")
+                            .path("/api/auth/")
                             .path(filename)
                             .toUriString();
                     validUrls.add(url);
@@ -78,5 +78,40 @@ public class PostService {
 
         return new UserFeedResponse(totalCount, remaining, postsResponseUserFeedList);
 
+    }
+
+    public PostsResponseUserFeed getSinglePost(Integer postId) {
+
+        PostFeedSummary post = postsRepository.findPostById(postId);
+
+        if (post == null) {
+            return null;
+        }
+
+        String rawMedia = post.getMedia();
+        List<String> validUrls = new ArrayList<>();
+
+        if (rawMedia != null && !rawMedia.trim().isEmpty()) {
+            String[] paths = rawMedia.split(",");
+
+            for (String fullPath : paths) {
+                if (fullPath.trim().isEmpty()) continue;
+
+                String filename = Paths.get(fullPath.trim()).getFileName().toString();
+
+                String url = ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/api/auth/")
+                        .path(filename)
+                        .toUriString();
+
+                validUrls.add(url);
+            }
+        }
+        return new PostsResponseUserFeed(
+                post.getPostId(),
+                post.getPostCaption(),
+                validUrls,
+                post.getPostCreatedTime()
+        );
     }
 }

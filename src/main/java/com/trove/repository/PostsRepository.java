@@ -26,4 +26,15 @@ public interface PostsRepository extends JpaRepository<Posts, Integer> {
         """, nativeQuery = true)
     List<PostFeedSummary> findUserPosts(@Param("userId") Integer userId);
 
+    @Query(value = """
+        SELECT 
+            p.postid AS postId,
+            p.postcaption AS postCaption,
+            p.media AS media,
+            p.postcreatedtime AS postCreatedTime
+        FROM posts p
+        WHERE p.postid = :postId
+        """, nativeQuery = true)
+    PostFeedSummary findPostById(@Param("postId") Integer postId);
+
 }
