@@ -2,16 +2,16 @@ package com.trove.response;
 
 import java.util.List;
 
-public class PostResponse extends Response{
+public class CreatePostResponse extends Response{
 
     private String caption;
     private String postType;
     private List<String> filePaths;
     private int id;
 
-    public PostResponse(){}
+    public CreatePostResponse(){}
 
-    public PostResponse(String message, String caption, String postType, List<String> filePaths, int id) {
+    public CreatePostResponse(String message, String caption, String postType, List<String> filePaths, int id) {
         super(message);
         this.caption = caption;
         this.postType = postType;

@@ -30,7 +30,7 @@ public class AuthController {
     public ResponseEntity<?> signUp(@RequestBody SignUpRequest signUpRequest) {
         try {
             SignUp signUp = authService.doSignUp(signUpRequest);
-            HomePageResponse homePageResponse = new HomePageResponse("User Registered Successfully", signUpRequest.getFirstName(), signUpRequest.getEmail(), signUp.getPhotoUrl(), signUp.getId());
+            AuthenticationHomePageResponse homePageResponse = new AuthenticationHomePageResponse("User Registered Successfully", signUpRequest.getFirstName(), signUpRequest.getEmail(), signUp.getPhotoUrl(), signUp.getId());
 
             return ResponseEntity.status(HttpStatus.CREATED).body(homePageResponse);
 
@@ -58,7 +58,7 @@ public class AuthController {
         // 3. Check if login was successful
         if (user != null) {
             // Create the response object with the message, first name and the PhotoURL
-            HomePageResponse homePageResponse = new HomePageResponse("Login Successful", user.getFirstName(), user.getEmail(), user.getPhotoUrl(), user.getId());
+            AuthenticationHomePageResponse homePageResponse = new AuthenticationHomePageResponse("Login Successful", user.getFirstName(), user.getEmail(), user.getPhotoUrl(), user.getId());
             return ResponseEntity.ok().body(homePageResponse);
         } else {
             // Handle invalid credentials

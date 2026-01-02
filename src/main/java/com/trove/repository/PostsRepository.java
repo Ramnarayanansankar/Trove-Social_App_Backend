@@ -1,7 +1,7 @@
 package com.trove.repository;
 
 import com.trove.model.Posts;
-import com.trove.response.RecentPostSummary;
+import com.trove.response.PostFeedSummary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,13 +14,16 @@ public interface PostsRepository extends JpaRepository<Posts, Integer> {
 
     @Query(value = """
         SELECT 
-            p.media AS media, 
-            COUNT(*) OVER() AS totalPosts
+            p.postid AS postId,
+            p.postcaption AS postCaption,
+            p.media AS media,
+            p.postcreatedtime AS postCreatedTime,
+            COUNT(*) OVER() AS totalCount   -- <--- Calculates total DB rows dynamically
         FROM posts p
         WHERE p.id = :userId 
         ORDER BY p.postcreatedtime DESC
-        LIMIT 6
+        LIMIT 10                            -- <--- Only return the top 10
         """, nativeQuery = true)
-    List<RecentPostSummary> findRecentPosts(@Param("userId") Integer userId);
+    List<PostFeedSummary> findUserPosts(@Param("userId") Integer userId);
 
 }

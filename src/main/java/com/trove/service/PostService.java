@@ -2,15 +2,13 @@ package com.trove.service;
 
 import com.trove.model.Posts;
 import com.trove.repository.PostsRepository;
-import com.trove.response.PostResponse;
-import com.trove.response.RecentPostSummary;
-import com.trove.response.Response;
-import com.trove.response.UserHomepageResponse;
+import com.trove.response.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +18,7 @@ public class PostService {
     @Autowired
     private PostsRepository postsRepository;
 
-    public Response savePost(PostResponse response) {
+    public Response savePost(CreatePostResponse response) {
 
         Posts posts = new Posts();
         posts.setId(response.getId());
@@ -40,33 +38,45 @@ public class PostService {
 
         return new Response("Post Created Successfully");
     }
-    public UserHomepageResponse getHomepageData(int id){
 
-        List<RecentPostSummary> results = postsRepository.findRecentPosts(id);
+    public UserFeedResponse getHomepageData(int id) {
 
-        if(results.isEmpty()){
-            return new UserHomepageResponse(0, List.of());
+        List<PostFeedSummary> rawPosts = postsRepository.findUserPosts(id);
+
+        if (rawPosts.isEmpty()) {
+            return new UserFeedResponse(0, 0, List.of());
         }
-        int totalCount = results.get(0).getTotalPosts();
 
-        List<String> photoUrls = results.stream()
-                .map(summary -> {
-                    String rawMedia = summary.getMedia();
-                    if (rawMedia == null || rawMedia.trim().isEmpty()) return null;
+        int totalCount = rawPosts.get(0).getTotalCount();
 
-                    String fullpath = rawMedia.split(",")[0].trim();
+        List<PostsResponseUserFeed> postsResponseUserFeedList = rawPosts.stream().map(post -> {
+            String rawMedia = post.getMedia();
+            List<String> validUrls = new ArrayList<>();
 
-                    String filename = Paths.get(fullpath).getFileName().toString();
+            if (rawMedia != null && !rawMedia.trim().isEmpty()) {
+                for (String fullPath : rawMedia.split(",")) {
+                    if (fullPath.trim().isEmpty()) continue;
+                    String filename = Paths.get(fullPath.trim()).getFileName().toString();
 
-                    return ServletUriComponentsBuilder.fromCurrentContextPath()
-                            .path("/api/auth/")
+                    String url = ServletUriComponentsBuilder.fromCurrentContextPath()
+                            .path("/api/auth")
                             .path(filename)
                             .toUriString();
-                })
-                .filter(url -> url != null)
-                .collect(Collectors.toList());
+                    validUrls.add(url);
 
-        return new UserHomepageResponse(totalCount, photoUrls);
+                }
+            }
+            return new PostsResponseUserFeed(post.getPostId(),
+                    post.getPostCaption(),
+                    validUrls,
+                    post.getPostCreatedTime());
+
+        }).collect(Collectors.toList());
+
+        int remaining = totalCount - postsResponseUserFeedList.size();
+        if (remaining < 0) remaining = 0;
+
+        return new UserFeedResponse(totalCount, remaining, postsResponseUserFeedList);
+
     }
-
 }

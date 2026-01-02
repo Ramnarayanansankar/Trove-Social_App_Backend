@@ -1,7 +1,8 @@
 package com.trove.controller;
 
-import com.trove.response.PostResponse;
+import com.trove.response.CreatePostResponse;
 import com.trove.response.Response;
+import com.trove.response.UserFeedResponse;
 import com.trove.service.AuthService;
 import com.trove.service.FileStorageService;
 import com.trove.service.PostService;
@@ -45,7 +46,7 @@ public class PostController {
         try{
             List<String> filePaths = fileStorageService.storeMultipleFiles(files);
 
-            PostResponse response = new PostResponse("Post Created Successfully", caption, posttype, filePaths, id );
+            CreatePostResponse response = new CreatePostResponse("Post Created Successfully", caption, posttype, filePaths, id );
 
             postService.savePost(response);
 
@@ -57,9 +58,11 @@ public class PostController {
     }
 
     @GetMapping("/postSummary")
-    public ResponseEntity<?> getHomepagePostDetails(@RequestParam("userId") int id){
+    public ResponseEntity<UserFeedResponse> getHomepagePostDetails(@RequestParam("userId") int id){
         return ResponseEntity.ok(postService.getHomepageData(id));
     }
+
+
 
     @GetMapping("/images/{filename}")
     public ResponseEntity<Resource> getImages(@PathVariable("filename") String filename){
@@ -67,7 +70,6 @@ public class PostController {
             Path filepath = Paths.get(storageDirectory).resolve(filename).normalize();
 
             Resource resource = new UrlResource(filepath.toUri());
-
             if(resource.exists() && resource.isReadable()){
                 String contentType = Files.probeContentType(filepath);
                 if (contentType == null) contentType = "application/octet-stream";

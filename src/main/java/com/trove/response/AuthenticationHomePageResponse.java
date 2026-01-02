@@ -1,27 +1,27 @@
 package com.trove.response;
 
-public class HomePageResponse extends Response{
+public class AuthenticationHomePageResponse extends Response{
 
     private String firstName;
     private String email;
     private String photoUrl;
     private int id;
 
-    public HomePageResponse() {
+    public AuthenticationHomePageResponse() {
     }
 
-    public HomePageResponse(String message) {
+    public AuthenticationHomePageResponse(String message) {
         super(message);
     }
 
-    public HomePageResponse(String firstName, String email, String photoUrl, int id) {
+    public AuthenticationHomePageResponse(String firstName, String email, String photoUrl, int id) {
         this.firstName = firstName;
         this.email = email;
         this.photoUrl = photoUrl;
         this.id = id;
     }
 
-    public HomePageResponse(String message, String firstName, String email, String photoUrl, int id) {
+    public AuthenticationHomePageResponse(String message, String firstName, String email, String photoUrl, int id) {
         super(message);
         this.firstName = firstName;
         this.email = email;
