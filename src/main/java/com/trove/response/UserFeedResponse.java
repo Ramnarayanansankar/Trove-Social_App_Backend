@@ -4,40 +4,30 @@ import java.util.List;
 
 public class UserFeedResponse {
 
-    private int totalcount;
-    private int remainingPosts;
-    private List<PostsResponseUserFeed> posts;
+    private int totalCount;
+    private List<String> imageUrls;
 
     public UserFeedResponse() {
     }
 
-    public UserFeedResponse(int totalcount, int remainingPosts, List<PostsResponseUserFeed> posts) {
-        this.totalcount = totalcount;
-        this.remainingPosts = remainingPosts;
-        this.posts = posts;
+    public UserFeedResponse(int totalCount, List<String> imageUrls) {
+        this.totalCount = totalCount;
+        this.imageUrls = imageUrls;
     }
 
-    public int getTotalcount() {
-        return totalcount;
+    public int getTotalCount() {
+        return totalCount;
     }
 
-    public void setTotalcount(int totalcount) {
-        this.totalcount = totalcount;
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
     }
 
-    public int getRemainingPosts() {
-        return remainingPosts;
+    public List<String> getImageUrls() {
+        return imageUrls;
     }
 
-    public void setRemainingPosts(int remainingPosts) {
-        this.remainingPosts = remainingPosts;
-    }
-
-    public List<PostsResponseUserFeed> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(List<PostsResponseUserFeed> posts) {
-        this.posts = posts;
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
     }
 }
