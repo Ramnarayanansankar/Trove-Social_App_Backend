@@ -14,16 +14,21 @@ public interface PostsRepository extends JpaRepository<Posts, Integer> {
 
     @Query(value = """
         SELECT 
-            p.media AS media, 
+            p.postid AS postId,
+            p.postcaption AS postCaption,
+            p.media AS media,
+            p.postcreatedtime AS postCreatedTime,
             COUNT(*) OVER() AS totalCount
         FROM posts p
         WHERE p.id = :userId 
         ORDER BY p.postcreatedtime DESC
         LIMIT :limit OFFSET :offset
         """, nativeQuery = true)
-    List<PostFeedSummary> findUserPosts(@Param("userId") Integer userId,
-                                        @Param("limit") int limit,
-                                        @Param("offset") int offset);
+    List<PostFeedSummary> findUserPosts(
+            @Param("userId") Integer userId,
+            @Param("limit") int limit,
+            @Param("offset") int offset
+    );
 
     @Query(value = """
         SELECT 

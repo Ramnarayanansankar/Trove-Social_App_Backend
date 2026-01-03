@@ -46,17 +46,16 @@ public class PostController {
 
         try{
             List<String> filePaths = fileStorageService.storeMultipleFiles(files);
-
             CreatePostResponse response = new CreatePostResponse("Post Created Successfully", caption, posttype, filePaths, id );
-
             postService.savePost(response);
-
             return ResponseEntity.status(HttpStatus.OK).body(new Response("The Post Created Successfully"));
 
            }catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+//    This API Endpoint Gets the UserFeedResponse with the UserId.
+//    This will retrieve the Details with pages. Pagination is Implemented for this.
 
     @GetMapping("/postSummary/{userId}")
     public ResponseEntity<UserFeedResponse> getHomepagePostDetails(@PathVariable("userId") int id,
@@ -65,9 +64,7 @@ public class PostController {
         return ResponseEntity.ok(postService.getHomepageData(id, page, size));
     }
 
-
 // This API Endpoint Gets the Images with the filename URL and Gives the Response as Image.
-
 
     @GetMapping("/images/{filename}")
     public ResponseEntity<Resource> getImages(@PathVariable("filename") String filename){
@@ -90,6 +87,7 @@ public class PostController {
             return ResponseEntity.internalServerError().build();
         }
     }
+//    This API Endpoint Will get the each post details and
 
     @GetMapping("/postDetailedView/{postId}")
     public ResponseEntity<PostsResponseUserFeed> getPostDetails(@PathVariable("postId") Integer postId) {

@@ -6,5 +6,5 @@ public interface PostFeedSummary {
     String getPostCaption();
     String getMedia();
     String getPostCreatedTime();
-    Integer getTotalCount();
+    Long getTotalCount();
 }

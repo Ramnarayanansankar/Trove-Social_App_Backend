@@ -32,8 +32,6 @@ public class PostService {
         } else {
             posts.setMedia(""); // or null, depending on your preference
         }
-
-
         postsRepository.save(posts);
 
         return new Response("Post Created Successfully");
@@ -42,36 +40,45 @@ public class PostService {
     public UserFeedResponse getHomepageData(int id, int page, int size) {
 
         int offset = page * size;
-        List<PostFeedSummary> results = postsRepository.findUserPosts(id, size, offset);
 
-        if (results.isEmpty()) {
+        List<PostFeedSummary> rawPosts = postsRepository.findUserPosts(id, size, offset);
+
+        if (rawPosts.isEmpty()) {
             return new UserFeedResponse(0, List.of());
         }
 
-        int totalCount = results.get(0).getTotalCount();
-        List<String> photoUrls = results.stream().map(summary -> {
-            String rawMedia = summary.getMedia();
+        Long dbCount = rawPosts.get(0).getTotalCount();
+        int totalCount = (dbCount != null) ? dbCount.intValue() : 0;
 
-            if (rawMedia == null && rawMedia.trim().isEmpty()) return null;
-                String fullPath = rawMedia.split(",")[0].trim();
-                String filename = Paths.get(fullPath).getFileName().toString();
+        List<PostsResponseUserFeed> postList = rawPosts.stream().map(post -> {
+            String rawMedia = post.getMedia();
 
-            return ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/api/auth/images/")
-                    .path(filename)
-                    .toUriString();
-                })
-                .filter(url -> url != null)
-                .collect(Collectors.toList());
+            List<String> validUrls = new ArrayList<>();
 
-        return new UserFeedResponse(totalCount, photoUrls);
+            if (rawMedia != null && !rawMedia.trim().isEmpty()) {
+                String[] paths = rawMedia.split(",");
+                for (String fullPath : paths) {
+                    if (fullPath.trim().isEmpty()) continue;
+                    String filename = Paths.get(fullPath.trim()).getFileName().toString();
+
+                    String url = ServletUriComponentsBuilder.fromCurrentContextPath()
+                            .path("/api/posts/images/")
+                            .path(filename)
+                            .toUriString();
+                    validUrls.add(url);
+                }
+            }
+
+            return new PostsResponseUserFeed(post.getPostId(), post.getPostCaption(), validUrls, post.getPostCreatedTime());
+        }).collect(Collectors.toList());
+
+        return new UserFeedResponse(totalCount, postList);
 
     }
 
     public PostsResponseUserFeed getSinglePost(Integer postId) {
 
         PostFeedSummary post = postsRepository.findPostById(postId);
-
         if (post == null) {
             return null;
         }
@@ -86,7 +93,6 @@ public class PostService {
                 if (fullPath.trim().isEmpty()) continue;
 
                 String filename = Paths.get(fullPath.trim()).getFileName().toString();
-
                 String url = ServletUriComponentsBuilder.fromCurrentContextPath()
                         .path("/api/auth/images/")
                         .path(filename)
