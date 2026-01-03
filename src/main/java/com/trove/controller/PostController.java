@@ -59,9 +59,9 @@ public class PostController {
 
     @GetMapping("/postSummary/{userId}")
     public ResponseEntity<UserFeedResponse> getHomepagePostDetails(@PathVariable("userId") int id,
-                                                                   @RequestParam(value = "page", defaultValue = "0") int page,
-                                                                   @RequestParam(value = "size", defaultValue = "6") int size){
-        return ResponseEntity.ok(postService.getHomepageData(id, page, size));
+                                                                   @RequestParam(value = "startIndex") int startIndex,
+                                                                   @RequestParam(value = "endIndex") int endIndex){
+        return ResponseEntity.ok(postService.getHomepageData(id, startIndex, endIndex));
     }
 
 // This API Endpoint Gets the Images with the filename URL and Gives the Response as Image.
@@ -87,7 +87,6 @@ public class PostController {
             return ResponseEntity.internalServerError().build();
         }
     }
-//    This API Endpoint Will get the each post details and
 
     @GetMapping("/postDetailedView/{postId}")
     public ResponseEntity<PostsResponseUserFeed> getPostDetails(@PathVariable("postId") Integer postId) {

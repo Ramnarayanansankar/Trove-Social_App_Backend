@@ -37,14 +37,19 @@ public class PostService {
         return new Response("Post Created Successfully");
     }
 
-    public UserFeedResponse getHomepageData(int id, int page, int size) {
+    public UserFeedResponse getHomepageData(int id, int startIndex, int endIndex) {
 
-        int offset = page * size;
+
+//        int offset = page * size;
+
+        int offset = startIndex;
+        int size = endIndex - startIndex + 1;
+        boolean hasMore;
+
 
         List<PostFeedSummary> rawPosts = postsRepository.findUserPosts(id, size, offset);
-
         if (rawPosts.isEmpty()) {
-            return new UserFeedResponse(0, List.of());
+            return new UserFeedResponse(0, List.of(), startIndex, endIndex, false);
         }
 
         Long dbCount = rawPosts.get(0).getTotalCount();
@@ -52,7 +57,6 @@ public class PostService {
 
         List<PostsResponseUserFeed> postList = rawPosts.stream().map(post -> {
             String rawMedia = post.getMedia();
-
             List<String> validUrls = new ArrayList<>();
 
             if (rawMedia != null && !rawMedia.trim().isEmpty()) {
@@ -62,17 +66,22 @@ public class PostService {
                     String filename = Paths.get(fullPath.trim()).getFileName().toString();
 
                     String url = ServletUriComponentsBuilder.fromCurrentContextPath()
-                            .path("/api/posts/images/")
+                            .path("/api/auth/images/")
                             .path(filename)
                             .toUriString();
                     validUrls.add(url);
                 }
             }
-
             return new PostsResponseUserFeed(post.getPostId(), post.getPostCaption(), validUrls, post.getPostCreatedTime());
+
         }).collect(Collectors.toList());
 
-        return new UserFeedResponse(totalCount, postList);
+        if(endIndex == totalCount){
+             hasMore = false;
+        }else{
+             hasMore = true;
+        }
+        return new UserFeedResponse(totalCount, postList, startIndex, endIndex, hasMore);
 
     }
 
