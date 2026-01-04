@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.trove.utility.AppConstant.*;
+
 @RestController
 @RequestMapping("/api/auth")
 public class ValidationController {
@@ -23,10 +25,10 @@ public class ValidationController {
         boolean exists = validationService.checkEmailExists(email);
 
         if(exists){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Email Id exists!"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response(VALIDATION_EMAIL_EXISTS));
         }
         else{
-            return ResponseEntity.status(HttpStatus.OK).body(new Response("Email Id does not exist!"));
+            return ResponseEntity.status(HttpStatus.OK).body(new Response(VALIDATION_EMAIL_DOES_NOT_EXISTS));
         }
     }
 
@@ -37,10 +39,10 @@ public class ValidationController {
         boolean exists = validationService.checkPhoneNumberExists(phoneNumber);
 
         if(exists){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Phone number found.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(VALIDATION_PHONE_EXISTS);
         }
         else{
-            return ResponseEntity.status(HttpStatus.OK).body("Phone number not found.");
+            return ResponseEntity.status(HttpStatus.OK).body(VALIDATION_PHONE_DOES_NOT_EXISTS);
         }
     }
 }

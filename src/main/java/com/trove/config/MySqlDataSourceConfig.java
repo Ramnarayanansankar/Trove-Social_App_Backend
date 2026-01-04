@@ -7,6 +7,8 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
+import static com.trove.utility.AppConstant.*;
+
 @Configuration
 public class MySqlDataSourceConfig {
 
@@ -14,14 +16,14 @@ public class MySqlDataSourceConfig {
     public DataSource dataSource() {
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/trove");
-        dataSource.setUsername(System.getenv("user"));
+        dataSource.setDriverClassName(DRIVER_CLASS_NAME);
+        dataSource.setUrl(DATABASE_URL_ADDRESS);
+        dataSource.setUsername(System.getenv(ENVIRONMENT_VARIABLE_USERNAME));
 
         AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
-        textEncryptor.setPassword(System.getenv("key"));
+        textEncryptor.setPassword(System.getenv(ENVIRONMENT_VARIABLE_PASSWORD_ENCRYPTOR));
 
-        dataSource.setPassword(textEncryptor.decrypt(System.getenv("password")));
+        dataSource.setPassword(textEncryptor.decrypt(System.getenv(ENVIRONMENT_VARIABLE_PASSWORD_DECRYPTOR)));
         return dataSource;
     }
 }

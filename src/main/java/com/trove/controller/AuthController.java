@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import static com.trove.utility.AppConstant.*;
 
 @RestController
 @RequestMapping("/api/auth") // Base URL
@@ -30,7 +31,7 @@ public class AuthController {
     public ResponseEntity<?> signUp(@RequestBody SignUpRequest signUpRequest) {
         try {
             SignUp signUp = authService.doSignUp(signUpRequest);
-            AuthenticationHomePageResponse homePageResponse = new AuthenticationHomePageResponse("User Registered Successfully", signUpRequest.getFirstName(), signUpRequest.getEmail(), signUp.getPhotoUrl(), signUp.getId());
+            AuthenticationHomePageResponse homePageResponse = new AuthenticationHomePageResponse(SIGNUP_SUCCESS_MESSAGE_RESPONSE, signUpRequest.getFirstName(), signUpRequest.getEmail(), signUp.getPhotoUrl(), signUp.getId());
 
             return ResponseEntity.status(HttpStatus.CREATED).body(homePageResponse);
 
@@ -40,7 +41,7 @@ public class AuthController {
 
         } catch (Exception e) {
             // Returns 500 INTERNAL SERVER ERROR for anything else
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during registration.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(SIGNUP_ERROR_MESSAGE_RESPONSE);
         }
     }
 
@@ -58,11 +59,11 @@ public class AuthController {
         // 3. Check if login was successful
         if (user != null) {
             // Create the response object with the message, first name and the PhotoURL
-            AuthenticationHomePageResponse homePageResponse = new AuthenticationHomePageResponse("Login Successful", user.getFirstName(), user.getEmail(), user.getPhotoUrl(), user.getId());
+            AuthenticationHomePageResponse homePageResponse = new AuthenticationHomePageResponse(LOGIN_SUCCESS_MESSAGE_RESPONSE, user.getFirstName(), user.getEmail(), user.getPhotoUrl(), user.getId());
             return ResponseEntity.ok().body(homePageResponse);
         } else {
             // Handle invalid credentials
-            ErrorResponse errorResponse = new ErrorResponse("Invalid email or password");
+            ErrorResponse errorResponse = new ErrorResponse(LOGIN_INVALID_CREDENTIALS_RESPONSE);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
     }

@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.trove.utility.AppConstant.*;
+
 @Service
 public class PostService {
 
@@ -34,13 +36,11 @@ public class PostService {
         }
         postsRepository.save(posts);
 
-        return new Response("Post Created Successfully");
+        return new Response(SAVE_POST_SUCCESS_RESPONSE_MESSAGE);
     }
 
     public UserFeedResponse getHomepageData(int id, int startIndex, int endIndex) {
 
-
-//        int offset = page * size;
 
         int offset = startIndex;
         int size = endIndex - startIndex + 1;
@@ -66,7 +66,7 @@ public class PostService {
                     String filename = Paths.get(fullPath.trim()).getFileName().toString();
 
                     String url = ServletUriComponentsBuilder.fromCurrentContextPath()
-                            .path("/api/auth/images/")
+                            .path(POST_IMAGE_URL_PATH)
                             .path(filename)
                             .toUriString();
                     validUrls.add(url);
@@ -103,7 +103,7 @@ public class PostService {
 
                 String filename = Paths.get(fullPath.trim()).getFileName().toString();
                 String url = ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path("/api/auth/images/")
+                        .path(POST_IMAGE_URL_PATH)
                         .path(filename)
                         .toUriString();
 

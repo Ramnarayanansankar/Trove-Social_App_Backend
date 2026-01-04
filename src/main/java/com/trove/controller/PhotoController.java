@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.net.MalformedURLException;
 
+import static com.trove.utility.AppConstant.UPLOADING_FILE_EMPTY_MESSAGE;
+
 @RestController
 @RequestMapping("/api/auth")
 public class PhotoController {
@@ -32,7 +34,7 @@ public class PhotoController {
     public String uploadPhoto(@RequestParam("file")MultipartFile file) {
 
         if (file.isEmpty()) {
-            return "File is Empty !! Cannot be Processed";
+            return UPLOADING_FILE_EMPTY_MESSAGE;
         } else {
             return fileStorageService.storeFile(file);
         }

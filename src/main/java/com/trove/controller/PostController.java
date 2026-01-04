@@ -15,11 +15,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+
+import static com.trove.utility.AppConstant.CREATED_POST_SUCCESS;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -46,9 +47,9 @@ public class PostController {
 
         try{
             List<String> filePaths = fileStorageService.storeMultipleFiles(files);
-            CreatePostResponse response = new CreatePostResponse("Post Created Successfully", caption, posttype, filePaths, id );
+            CreatePostResponse response = new CreatePostResponse(CREATED_POST_SUCCESS, caption, posttype, filePaths, id );
             postService.savePost(response);
-            return ResponseEntity.status(HttpStatus.OK).body(new Response("The Post Created Successfully"));
+            return ResponseEntity.status(HttpStatus.OK).body(new Response(CREATED_POST_SUCCESS));
 
            }catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

@@ -6,6 +6,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static com.trove.utility.AppConstant.SECURITY_CONFIG_PATH_MATCHERS;
+
 @Configuration
 public class SecurityConfig {
 
@@ -19,7 +21,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for testing purposes
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // Allow access to login/signup
+                        .requestMatchers(SECURITY_CONFIG_PATH_MATCHERS).permitAll() // Allow access to login/signup
                         .anyRequest().authenticated()
                 );
         return http.build();
